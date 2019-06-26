@@ -30,6 +30,25 @@ spl_autoload_register('\\Imooc\\Loader::autoload');
 // $db = new \IMooc\Database;
 // $a = $db->where('name=1')->order('id,desc')->limit(10);
 
+$obj = new \Imooc\Myobject;
+
+// 访问一个对象不存在的属性
+// $obj->title='hello';
+// echo $obj->title;
+
+// 访问一个对象不存在的方法
+// $o = $obj->say_hello('hello',123123);
+// echo $o;
+// 访问一个对象不存在的静态方法
+// $s = Imooc\Myobject::hello('66666666',55555555);
+// echo $s;
+
+/**
+ * 正常情况下，对象是不能直接输出的，在输出的时候会调用__toString方法
+ */
+// echo $obj;
+
+
 // IMooc\Myobject::test();
 // App\Controller\Home\Index::test();
 
