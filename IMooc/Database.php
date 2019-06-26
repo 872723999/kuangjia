@@ -1,8 +1,32 @@
 <?php 
 namespace Imooc;
-// 定义一个接口，子类必须包含父类的所有方法
+// 因为整个项目都需要加载数据库，每次连接都会造成资源的浪费，所以这里采用单例模式来实现
 class Database
 {
+
+	protected static $db;
+
+	// 第一步：构造方法私有化，禁止实例化
+	private function __construct()
+	{
+
+	}
+
+	// 第二步，获取实例
+	static function getInstance()
+	{
+		if( !self::$db ){
+			self::$db = new self();
+		}
+		return self::$db;
+	}
+
+	// 第三步：私有化克隆方法
+	private function __clone()
+	{
+
+	}
+
 	/**
 	 * where条件
 	 */

@@ -47,4 +47,12 @@ class Myobject
 	function __toString(){
 		return __Class__;
 	}
+
+	/**
+	 * 当一个对象被当成一个方法调用的时候会触发此方法	
+	 */
+	function __invoke( $param ){
+		var_dump( $param );
+		return "invoke";
+	}
 }
