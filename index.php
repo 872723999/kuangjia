@@ -61,9 +61,123 @@ spl_autoload_register('\\Imooc\\Loader::autoload');
 // $get_db1 = \Imooc\Register::get('db1');
 // var_dump($get_db1);die;
 
+// 适配器模式
+// $mysql = new \IMooc\Database\Mysql();
+// var_dump($mysql);die;
+
+// 策略模式
+/*
+class Page
+{
+	protected $strategy;
+	function index()
+	{
+		$this->strategy->showAdv();
+		$this->strategy->showCategory();
+	}
+
+	function setStrategy( \IMooc\UserStrategy $strategy )
+	{
+		$this->strategy = $strategy;
+	}
+}
+$page = new Page();
+if(isset($_GET['female'])){
+	$strategy = new \IMooc\Strategy;
+}else{
+	$strategy = new \IMooc\ManStrategy;
+}
+$page->setStrategy($strategy);
+$page->index();
+*/
 // ================数据库==================================
 
+// ==================观察者模式=====================================
+/**
+ *  观察者模式
+ 	观察者监听事件发生者（被观察者）
+ 	如果事件发生者发生改变的话要通知所有的观察者
+ */
+class Event extends EventGenerator
+{
+	/**
+	 * eg：用户下单之后->商品库存减1->通知商家有新订单->通知快递小哥有新快递->通知客户订单已经生效
+	 */
+	function tirgger()
+	{
+		echo "用户下单了<br />\n";
+		$this->notify();
+	}
+}
 
+// 事件产生者（被观察者）基类
+abstract class EventGenerator
+{
+	// 观察者数组
+	private $servers;
+	// 增加观察者
+	function addObServer( Observer $server )
+	{
+		$this->servers[] = $server;
+	}
+	// 通知观察者
+	function notify()
+	{
+		foreach ($this->servers as $server) {
+			$server->update();
+		}
+	}
+}
+
+// 观察者基类
+interface Observer
+{
+	function update();
+}
+
+// 商品
+class Goods implements Observer
+{
+	function update()
+	{
+		echo "库存减1<br />\n";
+	}
+}
+
+// 商家
+class Store implements Observer
+{
+	function update()
+	{
+		echo "有客户下单啦<br />\n";
+	}
+}
+
+// 快递
+class Express implements Observer
+{
+	function update()
+	{
+		echo "您有新订单啦，请及时配送<br />\n";
+	}
+}
+
+// 快递
+class User implements Observer
+{
+	function update()
+	{
+		echo "您的订单配送中，请耐心等待<br />\n";
+	}
+}
+
+$event = new Event();
+$event->addObServer( new Goods );
+$event->addObServer( new Store );
+$event->addObServer( new Express );
+$event->addObServer( new User );
+$event->tirgger();
+// ==================观察者模式=====================================
 
 
 
@@ -88,9 +202,6 @@ spl_autoload_register('\\Imooc\\Loader::autoload');
 // 当对象被当函数执行的时候会触发invoke
 // $a = $obj('test');
 // ================魔术方法==================================
-
-
-
 
 // IMooc\Myobject::test();
 // App\Controller\Home\Index::test();

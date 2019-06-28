@@ -1,5 +1,17 @@
 <?php 
 namespace Imooc;
+
+// 定义一个接口，用来整理几种数据库连接模式
+interface IDatabase{
+	// 连接
+	function connect( $host, $user, $pwd, $dbname );
+	// 查询
+	function query( $sql );
+	// 关闭连接
+	function close();
+
+}
+
 // 因为整个项目都需要加载数据库，每次连接都会造成资源的浪费，所以这里采用单例模式来实现
 class Database
 {

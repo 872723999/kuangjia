@@ -4,6 +4,9 @@ namespace IMooc;
 // 注册树模式
 class Register
 {
+
+	static $num = 1;
+
 	// 用于保存全局变量的数组
 	private static $objets;
 
@@ -23,4 +26,5 @@ class Register
 	{
 		unset(self::$objets[$key]);
 	}
+
 }
