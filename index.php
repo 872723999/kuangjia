@@ -191,48 +191,129 @@ $page->index();
 // 调用一下上次的原型模式
 
 
+// interface Decorator
+// {
+// 	function Before();
+// 	function After();
+// }
+
+// class ColorDecorator implements Decorator
+// {
+// 	function __construct( $color="red" )
+// 	{
+// 		$this->color = $color;
+// 	}
+// 	function Before()
+// 	{
+// 		echo "<div style='color:{$this->color}'>";
+// 	}
+// 	function After()
+// 	{
+// 		echo '</div>';
+// 	}
+// }
+
+// class SizeDecorator implements Decorator
+// {
+// 	function __construct( $size="12px" )
+// 	{
+// 		$this->size = $size;
+// 	}
+// 	function Before()
+// 	{
+// 		echo "<div style='font-size:{$this->size};'>";
+// 	}
+// 	function After()
+// 	{
+// 		echo '</div>';
+// 	}
+// }
+
+// $canvas = new Imooc\Canvas();
+// $canvas->addDecorator(new ColorDecorator('green'));
+// $canvas->addDecorator(new SizeDecorator('20px'));
+// $canvas->init(20,20)->square();
+
+
+// 自己测试
+
+// 装饰器接口
 interface Decorator
 {
-	function Before();
-	function After();
+	function beforeDecorator();
+	function afterDecorator();
 }
 
+// 改变颜色的装饰器
 class ColorDecorator implements Decorator
 {
 	function __construct( $color="red" )
 	{
 		$this->color = $color;
 	}
-	function Before()
+	function beforeDecorator()
 	{
 		echo "<div style='color:{$this->color}'>";
 	}
-	function After()
+	function afterDecorator()
 	{
-		echo '</div>';
+		echo '<div>';
 	}
 }
 
+// 改变字体大小的装饰器
 class SizeDecorator implements Decorator
 {
 	function __construct( $size="12px" )
 	{
 		$this->size = $size;
 	}
-	function Before()
+	function beforeDecorator()
 	{
-		echo "<div style='font-size:{$this->size};'>";
+		echo "<div style='font-size:{$this->size}'>";
 	}
-	function After()
+	function afterDecorator()
 	{
-		echo '</div>';
+		echo '<div>';
 	}
 }
 
-$canvas = new Imooc\Canvas();
-$canvas->addDecorator(new ColorDecorator('green'));
-$canvas->addDecorator(new SizeDecorator('20px'));
-$canvas->init(20,20)->square();
+class Test
+{
+	protected $decorators = array();
+
+	function index()
+	{
+		$this->befor();
+			echo '这是一个装饰器模式的小栗子';
+		$this->after();
+	}
+
+	function befor()
+	{
+		foreach ($this->decorators as $key => $decorator) {
+			$decorator->beforeDecorator();
+		}
+	}
+
+	function after()
+	{
+		$this->decorators = array_reverse($this->decorators);
+		foreach ($this->decorators as $key => $decorator) {
+			$decorator->afterDecorator();
+		}
+	}
+
+	function addDecorator( $decorator )
+	{
+		$this->decorators[] = $decorator;
+	}
+}
+
+$test = new Test();
+$test->addDecorator( new ColorDecorator('blue') );
+$test->addDecorator( new SizeDecorator('24px') );
+$test->index();
 
 // ==========================装饰器模式==========================
 
