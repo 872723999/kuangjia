@@ -98,87 +98,143 @@ $page->index();
  	观察者监听事件发生者（被观察者）
  	如果事件发生者发生改变的话要通知所有的观察者
  */
-class Event extends EventGenerator
-{
-	/**
-	 * eg：用户下单之后->商品库存减1->通知商家有新订单->通知快递小哥有新快递->通知客户订单已经生效
-	 */
-	function tirgger()
-	{
-		echo "用户下单了<br />\n";
-		$this->notify();
-	}
-}
+// class Event extends EventGenerator
+// {
+// 	/**
+// 	 * eg：用户下单之后->商品库存减1->通知商家有新订单->通知快递小哥有新快递->通知客户订单已经生效
+// 	 */
+// 	function tirgger()
+// 	{
+// 		echo "用户下单了<br />\n";
+// 		$this->notify();
+// 	}
+// }
 
-// 事件产生者（被观察者）基类
-abstract class EventGenerator
-{
-	// 观察者数组
-	private $servers;
-	// 增加观察者
-	function addObServer( Observer $server )
-	{
-		$this->servers[] = $server;
-	}
-	// 通知观察者
-	function notify()
-	{
-		foreach ($this->servers as $server) {
-			$server->update();
-		}
-	}
-}
+// // 事件产生者（被观察者）基类
+// abstract class EventGenerator
+// {
+// 	// 观察者数组
+// 	private $servers;
+// 	// 增加观察者
+// 	function addObServer( Observer $server )
+// 	{
+// 		$this->servers[] = $server;
+// 	}
+// 	// 通知观察者
+// 	function notify()
+// 	{
+// 		foreach ($this->servers as $server) {
+// 			$server->update();
+// 		}
+// 	}
+// }
 
-// 观察者基类
-interface Observer
-{
-	function update();
-}
+// // 观察者基类
+// interface Observer
+// {
+// 	function update();
+// }
 
-// 商品
-class Goods implements Observer
-{
-	function update()
-	{
-		echo "库存减1<br />\n";
-	}
-}
+// // 商品
+// class Goods implements Observer
+// {
+// 	function update()
+// 	{
+// 		echo "库存减1<br />\n";
+// 	}
+// }
 
-// 商家
-class Store implements Observer
-{
-	function update()
-	{
-		echo "有客户下单啦<br />\n";
-	}
-}
+// // 商家
+// class Store implements Observer
+// {
+// 	function update()
+// 	{
+// 		echo "有客户下单啦<br />\n";
+// 	}
+// }
 
-// 快递
-class Express implements Observer
-{
-	function update()
-	{
-		echo "您有新订单啦，请及时配送<br />\n";
-	}
-}
+// // 快递
+// class Express implements Observer
+// {
+// 	function update()
+// 	{
+// 		echo "您有新订单啦，请及时配送<br />\n";
+// 	}
+// }
 
-// 快递
-class User implements Observer
-{
-	function update()
-	{
-		echo "您的订单配送中，请耐心等待<br />\n";
-	}
-}
+// // 快递
+// class User implements Observer
+// {
+// 	function update()
+// 	{
+// 		echo "您的订单配送中，请耐心等待<br />\n";
+// 	}
+// }
 
-$event = new Event();
-$event->addObServer( new Goods );
-$event->addObServer( new Store );
-$event->addObServer( new Express );
-$event->addObServer( new User );
-$event->tirgger();
+// $event = new Event();
+// $event->addObServer( new Goods );
+// $event->addObServer( new Store );
+// $event->addObServer( new Express );
+// $event->addObServer( new User );
+// $event->tirgger();
 // ==================观察者模式=====================================
 
+
+// ==================原型模式===============================
+// $canvas = new Imooc\Canvas();
+// $canvas->init(10,10);
+// $canvas->square();
+// ==================原型模式===============================
+
+
+// ==========================装饰器模式==========================
+// 调用一下上次的原型模式
+
+
+interface Decorator
+{
+	function Before();
+	function After();
+}
+
+class ColorDecorator implements Decorator
+{
+	function __construct( $color="red" )
+	{
+		$this->color = $color;
+	}
+	function Before()
+	{
+		echo "<div style='color:{$this->color}'>";
+	}
+	function After()
+	{
+		echo '</div>';
+	}
+}
+
+class SizeDecorator implements Decorator
+{
+	function __construct( $size="12px" )
+	{
+		$this->size = $size;
+	}
+	function Before()
+	{
+		echo "<div style='font-size:{$this->size};'>";
+	}
+	function After()
+	{
+		echo '</div>';
+	}
+}
+
+$canvas = new Imooc\Canvas();
+$canvas->addDecorator(new ColorDecorator('green'));
+$canvas->addDecorator(new SizeDecorator('20px'));
+$canvas->init(20,20)->square();
+
+// ==========================装饰器模式==========================
 
 
 // ================魔术方法==================================
